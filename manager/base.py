@@ -1,6 +1,8 @@
 import datetime
 from typing import List
 
+CND_NODE_IMAGE_NAME = 'redis:3.0.7'     # FIXME
+
 
 class Task:
     def __init__(self, name: str, region: str, created: datetime.datetime):
