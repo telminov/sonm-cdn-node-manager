@@ -1,5 +1,8 @@
-from django.http import HttpResponse
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
 
 
-def nodes(request):
-    return HttpResponse('{"europe": ["127.0.0.1"]}')
+class Nodes(GenericAPIView):
+
+    def get(self, request):
+        return Response({"europe": ["127.0.0.1"]})

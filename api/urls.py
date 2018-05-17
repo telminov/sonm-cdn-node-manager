@@ -4,6 +4,6 @@ from api import views
 app_name = 'api'
 
 urlpatterns = [
-    path('nodes/', views.nodes, name='nodes'),
+    path('nodes/', views.Nodes.as_view(), name='nodes'),
 ]
 
