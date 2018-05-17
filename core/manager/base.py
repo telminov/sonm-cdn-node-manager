@@ -21,6 +21,10 @@ class Manager:
     def stop(self, node: Node):
         raise NotImplementedError()
 
+    def refresh(self):
+        """refresh nodes state info (ip, load)"""
+        raise NotImplementedError()
+
     def init_regions(self) -> List[Node]:
         """Инициализация сети с нодами"""
         nodes = []

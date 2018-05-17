@@ -3,6 +3,7 @@ import random
 from typing import List
 import digitalocean
 from django.conf import settings
+from django.utils.timezone import now
 
 from .base import Manager
 from core.models import Node
@@ -51,6 +52,27 @@ class DOManager(Manager):
                 droplet.destroy()
                 return
         raise Exception('Not found node with external ID "%s"' % node.external_id)
+
+    def refresh(self):
+        current_nodes = {n.external_id: n for n in Node.objects.filter(stopped__isnull=True)}
+
+        droplets = self.get_droplets()
+        for droplet in droplets:
+            external_id = str(droplet.id)
+            if external_id not in current_nodes:
+                continue
+
+            node = current_nodes.pop(external_id)
+            node.ip4 = droplet.ip_address
+            node.heartbeat = now()
+            if not node.started:
+                node.started = now()
+            node.save()
+
+        # ноды, для которых не были найдены дроплеты
+        for node in current_nodes.values():
+            node.stopped = now()
+            node.save()
 
     def get_manager(self) -> digitalocean.Manager:
         if not self._manager:

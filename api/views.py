@@ -15,7 +15,7 @@ class NodesByRegions(GenericAPIView):
         nodes_by_regions = {}
 
         qs = core.models.Node.objects\
-            .filter(deleted__isnull=True)\
+            .filter(stopped__isnull=True)\
             .exclude(ip4='')
 
         for node in qs.iterator():
@@ -27,7 +27,7 @@ class NodesByRegions(GenericAPIView):
 class Node(ModelViewSet):
     authentication_classes = (SessionAuthentication, )
     permission_classes = (IsAuthenticated, )
-    queryset = core.models.Node.objects.filter(deleted__isnull=True)
+    queryset = core.models.Node.objects.filter(stopped__isnull=True)
     serializer_class = serializers.Node
 
     def perform_create(self, serializer):
@@ -40,5 +40,5 @@ class Node(ModelViewSet):
         manager = Manager.get_manager()
         manager.stop(instance)
 
-        instance.deleted = now()
+        instance.stopped = now()
         instance.save()
