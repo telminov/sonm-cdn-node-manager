@@ -1,3 +1,4 @@
+from django.utils.timezone import now
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -25,5 +26,14 @@ class NodesByRegions(GenericAPIView):
 class Node(ModelViewSet):
     authentication_classes = (SessionAuthentication, )
     permission_classes = (IsAuthenticated, )
-    queryset = core.models.Node.objects.all()
+    queryset = core.models.Node.objects.filter(deleted__isnull=True)
     serializer_class = serializers.Node
+
+    def perform_create(self, serializer):
+        serializer.save()
+        # TODO: создание ноды
+
+    def perform_destroy(self, instance):
+        instance.deleted = now()
+        instance.save()
+        # TODO: удаление ноды
