@@ -1,5 +1,5 @@
 from typing import List
-from .base import Task, Manager
+from .base import Manager
 
 # можно сделать лучше
 REGIONS_COUNTRIES = {

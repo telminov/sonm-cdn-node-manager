@@ -6,6 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 import core.models
+from core.manager.base import Manager
 from api import serializers
 
 
@@ -30,10 +31,14 @@ class Node(ModelViewSet):
     serializer_class = serializers.Node
 
     def perform_create(self, serializer):
-        serializer.save()
-        # TODO: создание ноды
+        node = serializer.save()
+
+        manager = Manager.get_manager()
+        manager.start(node)
 
     def perform_destroy(self, instance):
+        manager = Manager.get_manager()
+        manager.stop(instance)
+
         instance.deleted = now()
         instance.save()
-        # TODO: удаление ноды

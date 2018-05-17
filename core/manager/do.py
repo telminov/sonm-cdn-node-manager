@@ -1,11 +1,11 @@
 # Digital Ocean
-import datetime
+import random
 from typing import List
-from django.conf import settings
-from django.utils.timezone import now
-
-from .base import Task, Manager
 import digitalocean
+from django.conf import settings
+
+from .base import Manager
+from core.models import Node
 
 
 REGIONS_MAP = {
@@ -17,12 +17,7 @@ REGIONS_MAP = {
     'OC': ['sgp1'],                                     # Океания - Сингапур
     'SA': ['sfo1'],                                     # Южная Америка
 }
-
-
-class DOTask(Task):
-    def __init__(self, name: str, region: str, created: datetime.datetime, droplet: digitalocean.Droplet):
-        super().__init__(name, region, created)
-        self.droplet = droplet
+TAG_NAME = 'sonm-cdn'
 
 
 class DOManager(Manager):
@@ -30,25 +25,32 @@ class DOManager(Manager):
     def __init__(self):
         super().__init__()
         self._manager = None
-        self._key = []
+        self._keys = []
 
-    def create(self, name: str, region: str) -> DOTask:
+    def start(self, node: Node):
         size_slug = 's-1vcpu-1gb'
+        ssh_keys = self.get_ssh_keys()
+        do_region = random.choice(REGIONS_MAP[node.region])
 
-        do_region = REGIONS_MAP[region]
         droplet = digitalocean.Droplet(token=settings.DO_TOKEN,
-                                       name=name,
+                                       name=node.name,
                                        region=do_region,
                                        image='ubuntu-18-04-x64',    # TODO: заменить на образ с нодой CDN
                                        size_slug=size_slug,
-                                       ssh_keys=self.get_ssh_keys(),
+                                       ssh_keys=ssh_keys,
+                                       tags=[TAG_NAME],
                                        backups=False)
         droplet.create()
-        task = DOTask(name=name, region=region, created=now(), droplet=droplet)
-        return task
 
-    def stop(self, task: Task):
-        pass
+        node.external_id = droplet.id
+        node.save()
+
+    def stop(self, node: Node):
+        for droplet in self.get_droplets():
+            if str(droplet.id) == node.external_id:
+                droplet.destroy()
+                return
+        raise Exception('Not found node with external ID "%s"' % node.external_id)
 
     def get_manager(self) -> digitalocean.Manager:
         if not self._manager:
@@ -56,10 +58,14 @@ class DOManager(Manager):
         return self._manager
 
     def get_ssh_keys(self) -> List[digitalocean.SSHKey]:
-        if not self._key:
+        if not self._keys:
             for key in self.get_manager().get_all_sshkeys():
-                if key.name == settings.DO_SSH_KEY_NAMES:
-                    self._key.append(key)
-            if not self._key:
+                if key.name in settings.DO_SSH_KEY_NAMES:
+                    self._keys.append(key)
+            if not self._keys:
                 raise Exception('SSH keys "%s" not found' % settings.DO_SSH_KEY_NAMES)
-        return self._key
+        return self._keys
+
+    def get_droplets(self) -> List[digitalocean.Droplet]:
+        droplets = self.get_manager().get_all_droplets(tag_name=TAG_NAME)
+        return droplets

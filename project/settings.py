@@ -123,6 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Digital Ocean
+USE_DO = True
 DO_TOKEN = ''
 DO_SSH_KEY_NAMES = []
 
