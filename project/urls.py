@@ -20,7 +20,7 @@ from django.views.generic import RedirectView
 import api.urls
 
 urlpatterns = [
-    path('', RedirectView.as_view(pattern_name='api:nodes', permanent=False)),
+    path('', RedirectView.as_view(pattern_name='api:nodes_by_regions', permanent=False)),
     path('admin/', admin.site.urls),
     path('api/', include(api.urls, namespace='api')),
 ]

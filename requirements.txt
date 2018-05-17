@@ -2,3 +2,5 @@ docker==3.3.0
 django==2.0.5
 djangorestframework==3.8.2
 gunicorn==19.8.1
+ipython
+python-digitalocean==1.13.2

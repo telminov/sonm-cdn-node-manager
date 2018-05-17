@@ -122,6 +122,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Digital Ocean
+DO_TOKEN = ''
+DO_SSH_KEY_NAMES = []
 
 try:
     from project.local_settings import *
