@@ -2,7 +2,7 @@ from typing import List
 from django.conf import settings
 from core.models import Node
 
-CND_NODE_IMAGE_NAME = 'redis:3.0.7'     # FIXME
+CND_NODE_IMAGE_NAME = 'telminov/sonm-cdn-node'
 
 
 class Manager:
