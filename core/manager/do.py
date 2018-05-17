@@ -19,6 +19,7 @@ REGIONS_MAP = {
     'SA': ['sfo2'],                                     # Южная Америка
 }
 TAG_NAME = 'sonm-cdn'
+CND_NODE_IMAGE_NAME = 'sonm-cdn-node'
 
 
 class DOManager(Manager):
@@ -26,6 +27,7 @@ class DOManager(Manager):
     def __init__(self):
         super().__init__()
         self._manager = None
+        self._image = None
         self._keys = []
 
     def start(self, node: Node):
@@ -36,7 +38,7 @@ class DOManager(Manager):
         droplet = digitalocean.Droplet(token=settings.DO_TOKEN,
                                        name=node.name,
                                        region=do_region,
-                                       image='ubuntu-18-04-x64',    # TODO: заменить на образ с нодой CDN
+                                       image=self.get_image(),
                                        size_slug=size_slug,
                                        ssh_keys=ssh_keys,
                                        tags=[TAG_NAME],
@@ -91,3 +93,13 @@ class DOManager(Manager):
     def get_droplets(self) -> List[digitalocean.Droplet]:
         droplets = self.get_manager().get_all_droplets(tag_name=TAG_NAME)
         return droplets
+
+    def get_image(self) -> digitalocean.Image:
+        if not self._image:
+            for image in self.get_manager().get_all_images():
+                if image.name == CND_NODE_IMAGE_NAME:
+                    self._image = image
+                    break
+            if not self._image:
+                raise Exception('Digital Ocean image "%s" not found' % CND_NODE_IMAGE_NAME)
+        return self._image
