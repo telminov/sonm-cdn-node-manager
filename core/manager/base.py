@@ -30,7 +30,7 @@ class Manager:
         nodes = []
 
         for region in Node.REGIONS:
-            node = Node.objects.create(name='%s1' % region, region=region)
+            node = Node(name='%s1' % region, region=region)
             self.start(node)
             nodes.append(node)
 
