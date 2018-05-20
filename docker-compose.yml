@@ -25,7 +25,7 @@ services:
     ports:
      - "8083:80"
     volumes:
-      - "../node/web_server.py:/opt/app/web_server.py"
+      - "../node:/opt/app"
       - "/var/docker/sonm/cdn/node/data:/data"
     links:
       - "cms:cms.cdn.sonm.soft-way.biz"
