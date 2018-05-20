@@ -46,6 +46,7 @@ class DOManager(Manager):
         droplet.create()
 
         node.external_id = droplet.id
+        node.throughput = 1024 * 1024 * 100     # считаем максимольной пропускную способность 100 Мб/сек
         node.save()
 
     def stop(self, node: Node):
