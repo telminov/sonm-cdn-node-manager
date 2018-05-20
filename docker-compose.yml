@@ -1,0 +1,32 @@
+version: "3"
+services:
+  node-manager:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:80
+    ports:
+     - "8081:80"
+    volumes:
+      - ".:/opt/app"
+      - "/var/docker/sonm/cdn/node-manager/conf:/conf"
+      - "/var/docker/sonm/cdn/node-manager/data:/data"
+
+  cms:
+    build: ../cms
+    command: python3 manage.py runserver 0.0.0.0:80
+    ports:
+     - "8082:80"
+    volumes:
+      - "../cms:/opt/app"
+      - "/var/docker/sonm/cdn/cms/conf:/conf"
+      - "/var/docker/sonm/cdn/cms/data:/data"
+
+  node:
+    build: ../node
+#    command: python3 manage.py runserver 0.0.0.0:80
+    ports:
+     - "8083:80"
+    volumes:
+      - "../node/web_server.py:/opt/app/web_server.py"
+      - "/var/docker/sonm/cdn/node/data:/data"
+    links:
+      - "cms:cms.cdn.sonm.soft-way.biz"
