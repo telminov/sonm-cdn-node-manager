@@ -22,7 +22,6 @@ services:
 
   node:
     build: ../node
-#    command: python3 manage.py runserver 0.0.0.0:80
     ports:
      - "8083:80"
     volumes:
