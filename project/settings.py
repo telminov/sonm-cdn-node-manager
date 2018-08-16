@@ -127,6 +127,11 @@ USE_DO = True
 DO_TOKEN = ''
 DO_SSH_KEY_NAMES = []
 
+# SONM
+COUNTERPARTY = None     # optional restriction for creating cdn-nodes only by specified supplier
+NODE_DOWNLOAD = 100     # bid order benchmarks net-download parameter (Mb/sec)
+NODE_UPLOAD = 100       # bid order benchmarks net-upload parameter (Mb/sec)
+
 try:
     from project.local_settings import *
 except ImportError:

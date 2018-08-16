@@ -50,10 +50,14 @@ class DOManager(Manager):
         node.save()
 
     def stop(self, node: Node):
+        node.stopped = now()
+        node.save()
+
         for droplet in self.get_droplets():
             if str(droplet.id) == node.external_id:
                 droplet.destroy()
                 return
+
         raise Exception('Not found node with external ID "%s"' % node.external_id)
 
     def refresh(self):
@@ -67,6 +71,7 @@ class DOManager(Manager):
 
             node = current_nodes.pop(external_id)
             node.ip4 = droplet.ip_address
+            node.port = '80'
             node.heartbeat = now()
             if not node.started:
                 node.started = now()

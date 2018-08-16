@@ -40,5 +40,3 @@ class Node(ModelViewSet):
         manager = Manager.get_manager()
         manager.stop(instance)
 
-        instance.stopped = now()
-        instance.save()

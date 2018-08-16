@@ -11,6 +11,7 @@ class Node(models.Model):
     name = models.CharField(max_length=255)
     region = models.CharField(max_length=100, choices=REGIONS_CHOICES)
     ip4 = models.CharField(max_length=15, blank=True)
+    port = models.CharField(max_length=5, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     started = models.DateTimeField(null=True, blank=True)
     heartbeat = models.DateTimeField(null=True, blank=True)
@@ -35,3 +36,9 @@ class Node(models.Model):
 
         self.stopped = now()
         self.save()
+
+
+class SonmBid(models.Model):
+    node = models.OneToOneField(Node, on_delete=models.CASCADE, related_name='bid')
+    deal_id = models.CharField(blank=True, max_length=100)
+    task_id = models.CharField(blank=True, max_length=100)
