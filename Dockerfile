@@ -32,6 +32,6 @@ VOLUME /media/
 CMD test "$(ls /conf/local_settings.py)" || cp project/local_settings.sample.py /conf/local_settings.py; \
     rm project/local_settings.py;  ln -s /conf/local_settings.py project/local_settings.py; \
     python3 ./manage.py migrate; \
-    python3 ./manage.py collectstatic --no-input; mv node_modules/ static/; mv static/* /static/; \
     npm install; \
+    python3 ./manage.py collectstatic --no-input; mv node_modules/ static/; mv static/* /static/; \
     /usr/bin/supervisord -c /etc/supervisor/supervisord.conf --nodaemon

@@ -20,7 +20,7 @@ start install ansible-playbook
 cd ansible
 source venv/bin/activate
 pip install -r requirements.txt
-cat INSTANCE_HOST_IP > inventory
+echo "INSTANCE_HOST_IP" > inventory
 
 ansible-playbook -i inventory -u root install.yml
 ```
