@@ -1,0 +1,59 @@
+- name: Install SONM CDN node manager
+  hosts: all
+
+  tasks:
+    - name: install packages
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+        cache_valid_time: 3600
+      with_items:
+        - docker.io
+        - python-pip
+        - nginx
+
+    - name: install docker-py
+      pip:
+        name: docker-py
+        version: 1.10.6
+
+    - name: remove old node-manager instance
+      docker_container:
+        name: node-manager
+        image: telminov/sonm-cdn-node-manager
+        state: absent
+
+    - name: create web-static dircetory
+      file:
+        path: /var/www/node-manager/static
+        state: directory
+        owner: www-data
+        group: www-data
+        recurse: yes
+
+    - name: start node-manager
+      docker_container:
+        name: node-manager
+        image: telminov/sonm-cdn-node-manager
+        pull: yes
+        ports:
+          - 127.0.0.1:8080:80
+        volumes:
+          - /data
+          - /conf
+          - /var/www/node-manager/static:/static
+
+    - name: remove nginx default
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: create nginx config
+      template:
+        src: nginx.conf
+        dest: /etc/nginx/sites-enabled/node-manager
+
+    - name: reload nginx
+      service:
+        name: nginx
+        state: reloaded

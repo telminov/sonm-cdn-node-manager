@@ -1,9 +1,12 @@
+# docker build -t telminov/sonm-cdn-node-manager .
+# docker push telminov/sonm-cdn-node-manager
 FROM ubuntu:18.04
 
 RUN apt-get clean && apt-get update && apt-get install -y \
     supervisor \
     python3-dev \
-    python3-pip
+    python3-pip \
+    npm
 
 
 ADD requirements.txt /tmp/requirements.txt
@@ -29,4 +32,6 @@ VOLUME /media/
 CMD test "$(ls /conf/local_settings.py)" || cp project/local_settings.sample.py /conf/local_settings.py; \
     rm project/local_settings.py;  ln -s /conf/local_settings.py project/local_settings.py; \
     python3 ./manage.py migrate; \
+    python3 ./manage.py collectstatic --no-input; mv node_modules/ static/; mv static/* /static/; \
+    npm install; \
     /usr/bin/supervisord -c /etc/supervisor/supervisord.conf --nodaemon
