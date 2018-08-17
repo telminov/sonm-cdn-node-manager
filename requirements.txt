@@ -5,3 +5,4 @@ gunicorn==19.8.1
 ipython
 python-digitalocean==1.13.2
 sonm
+django-bootstrap4==0.0.6

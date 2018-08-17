@@ -27,10 +27,10 @@ class SonmManager(Manager):
             net_download=1024 * 1024 * settings.NODE_DOWNLOAD,
             net_upload=1024 * 1024 * settings.NODE_UPLOAD,
         )
-        n = NetworkParams(incoming=True, outbound=True)
+        n = NetworkParams(incoming=True, outbound=True, overlay=True)
         bid = BidParams(
             duration=0,
-            price='0.001 USD/h',
+            price='0.01 USD/h',
             counterparty=settings.COUNTERPARTY,
             identity=sonm.consts.IDENTITY_ANONYMOUS,
             tag='sonm-cdn-node',
@@ -55,8 +55,6 @@ class SonmManager(Manager):
         else:
             self.sonm.order.cancel(order_id=node.external_id)
 
-        raise NotImplementedError()
-
     def refresh(self):
         """refresh nodes state info (ip, load)"""
         deals = self.sonm.deal.list()['deals'] or []
@@ -65,6 +63,7 @@ class SonmManager(Manager):
         deal_ids = set()
         for deal in deals:
             deal_id = deal['id']
+            deal_ids.add(deal_id)
 
             bid_id = deal.get('bidID')
             if not bid_id:
@@ -78,7 +77,7 @@ class SonmManager(Manager):
             node = node_qs[0]
 
             # deal ready for start task
-            tasks = self.sonm.task.list(deal_id)
+            tasks = self.sonm.task.list(deal_id) or {}
             tasks = {task_id: info for task_id, info in tasks.items() if info['status'] <= 3}   # only active tasks
             if tasks:
                 task_id = list(tasks.keys())[0]
@@ -101,6 +100,7 @@ class SonmManager(Manager):
         # node had deal, but now no active deal (case of external deal closing)
         nodes_without_deal = models.Node.objects\
             .exclude(bid__deal_id__in=deal_ids) \
+            .filter(stopped__isnull=True) \
             .exclude(bid__deal_id='')
         nodes_without_deal.update(stopped=now())
 

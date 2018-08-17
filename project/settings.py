@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'bootstrap4',
     'core',
     'api',
 ]
@@ -123,7 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Digital Ocean
-USE_DO = True
+USE_DO = False
 DO_TOKEN = ''
 DO_SSH_KEY_NAMES = []
 

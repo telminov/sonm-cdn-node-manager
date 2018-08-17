@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block container %}
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
+    </form>
+{% endblock %}

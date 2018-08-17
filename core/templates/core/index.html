@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+{% block container %}
+    <div class="row" style="margin-top: 5px; margin-bottom: 5px">
+        <div class="col-2">
+            <a href="/node/create/" class="btn btn-block btn-success">
+                Create node
+            </a>
+        </div>
+
+        <div class="col-2 offset-6">
+            <a href="/api/nodes_by_regions/" class="btn btn-block btn-secondary">
+                API
+            </a>
+        </div>
+        <div class="col-2">
+            <a href="/admin/" class="btn btn-block btn-outline-dark">
+                Admin
+            </a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Bid ID</th>
+                <th>Name</th>
+                <th>Region</th>
+                <th>Address</th>
+                <th>Created</th>
+                <th>Started</th>
+                <th>Heartbeat</th>
+                <th>Stopped</th>
+                <th>Throughput</th>
+                <th>Load</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for node in object_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ node.external_id }}</td>
+                    <td>{{ node.name }}</td>
+                    <td>{{ node.region }}</td>
+                    <td>{{ node.get_address|default:'' }}</td>
+                    <td title="{{ node.created }}">{{ node.created|date:'H:i:s' }}</td>
+                    <td title="{{ node.started|default:'' }}">{{ node.started|date:'H:i:s'|default:'' }}</td>
+                    <td title="{{ node.heartbeat|default:'' }}">{{ node.heartbeat|date:'H:i:s'|default:'' }}</td>
+                    <td title="{{ node.stopped|default:'' }}">{{ node.stopped|date:'H:i:s'|default:'' }}</td>
+                    <td>{{ node.throughput|default:'' }}</td>
+                    <td>{{ node.load|default:'' }}</td>
+                    <td>
+                        <a href="{% url 'node_stop' node.pk %}" class="btn btn-sm btn-danger">Stop</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

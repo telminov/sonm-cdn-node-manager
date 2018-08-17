@@ -17,11 +17,16 @@ class Node(models.Model):
     heartbeat = models.DateTimeField(null=True, blank=True)
     stopped = models.DateTimeField(null=True, blank=True)
 
-    throughput = models.BigIntegerField(help_text='Максимальная пропускная способность хоста. В байтах.')
-    prev_sent_bytes = models.BigIntegerField(null=True, help_text='Предыдущий замер объема отданного трафика с хоста')
-    prev_sent_bytes_dt = models.DateTimeField(null=True, help_text='Время вредыдущего замера')
-    last_sent_bytes = models.BigIntegerField(null=True, help_text='Последний замер объема отданного трафика с хоста')
-    last_sent_bytes_dt = models.DateTimeField(null=True, help_text='Время последнего')
+    throughput = models.BigIntegerField(blank=True, null=True,
+                                        help_text='Максимальная пропускная способность хоста. В байтах.')
+    prev_sent_bytes = models.BigIntegerField(blank=True, null=True,
+                                             help_text='Предыдущий замер объема отданного трафика с хоста')
+    prev_sent_bytes_dt = models.DateTimeField(blank=True, null=True,
+                                              help_text='Время вредыдущего замера')
+    last_sent_bytes = models.BigIntegerField(blank=True, null=True,
+                                             help_text='Последний замер объема отданного трафика с хоста')
+    last_sent_bytes_dt = models.DateTimeField(blank=True, null=True,
+                                              help_text='Время последнего')
 
     def __str__(self):
         return self.name
@@ -36,6 +41,10 @@ class Node(models.Model):
 
         self.stopped = now()
         self.save()
+
+    def get_address(self):
+        if self.ip4:
+            return '%s:%s' % (self.ip4, self.port)
 
 
 class SonmBid(models.Model):

@@ -13,14 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 
 import api.urls
+import core.urls
 
 urlpatterns = [
-    path('', RedirectView.as_view(pattern_name='api:nodes_by_regions', permanent=False)),
+    # path('', RedirectView.as_view(pattern_name='api:nodes_by_regions', permanent=False)),
     path('admin/', admin.site.urls),
     path('api/', include(api.urls, namespace='api')),
+    path('', include(core.urls)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static('node_modules', document_root=settings.BASE_DIR + '/node_modules')
