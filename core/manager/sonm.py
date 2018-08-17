@@ -106,7 +106,8 @@ class SonmManager(Manager):
 
     def _start_task(self, deal_id: str) -> str:
         params = TaskParams(
-            image='telminov/sonm-cdn-node'
+            image='telminov/sonm-cdn-node',
+            expose=[('80', '80')],
         )
 
         task_id = self.sonm.task.start(deal_id=deal_id, params=params)['id']
