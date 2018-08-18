@@ -12,15 +12,12 @@ class Command(BaseCommand):
 
     help = 'Destroy stopped nodes'
 
-    sleep_time = None
-    verbosity = None
-
     def add_arguments(self, parser):
         parser.add_argument(
             '--infinitely',
             dest='infinitely',
             action='store_true',
-            help=u'Бесконечный цикл, смотрим на загрузку нод',
+            help='Бесконечный цикл, смотрим на загрузку нод',
         )
         parser.add_argument(
             '--time',
@@ -36,9 +33,12 @@ class Command(BaseCommand):
         if options.get('infinitely'):
             while True:
                 self.destroy_nodes()
+                if self.verbosity:
+                    print(f'Sleep {self.sleep_time} sec')
+
                 time.sleep(self.sleep_time)
         else:
-            self.delete_nodes()
+            self.destroy_nodes()
 
     def destroy_nodes(self):
         nodes = self.get_need_destroy_nodes()
@@ -46,12 +46,12 @@ class Command(BaseCommand):
 
         for node in nodes:
             if self.verbosity:
-                print(f'Нода {node.name} удалена')
+                print(f'Node {node.name} destroyed')
 
             node.destroy()
 
         if self.verbosity and nodes_count:
-            print(f'Было удалено {nodes_count} нод')
+            print(f'{nodes_count} nodes has been deleted')
 
     @staticmethod
     def get_need_destroy_nodes():
