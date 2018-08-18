@@ -44,8 +44,7 @@ class Command(BaseCommand):
             self.check_load_average()
 
     def check_load_average(self):
-        nodes = models.Node.objects.filter(stopped__isnull=True).exclude(ip4='')
-        for region in set(nodes.values_list('region', flat=True)):
+        for region in models.Node.REGIONS:
             running_nodes = models.Node.get_running_nodes(region)
             not_started_nodes = models.Node.get_not_started_nodes(region)
 
