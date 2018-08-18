@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, CreateView, FormView
 
@@ -5,12 +6,12 @@ from core import models
 from core.manager.base import Manager
 
 
-class Index(ListView):
+class Index(LoginRequiredMixin, ListView):
     template_name = 'core/index.html'
     queryset = models.Node.objects.all()
 
 
-class NodeCreate(CreateView):
+class NodeCreate(LoginRequiredMixin, CreateView):
     model = models.Node
     fields = '__all__'
     success_url = '/'
@@ -29,7 +30,7 @@ class NodeCreate(CreateView):
         return response
 
 
-class NodeStop(TemplateView):
+class NodeStop(LoginRequiredMixin, TemplateView):
     success_url = '/'
     template_name = 'core/node_stop.html'
 

@@ -1,3 +1,5 @@
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.utils.timezone import now
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import GenericAPIView
@@ -11,6 +13,9 @@ from api import serializers
 
 
 class NodesByRegions(GenericAPIView):
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         nodes_by_regions = {}
 
@@ -25,7 +30,7 @@ class NodesByRegions(GenericAPIView):
 
 
 class Node(ModelViewSet):
-    authentication_classes = (SessionAuthentication, )
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, )
     queryset = core.models.Node.objects.filter(stopped__isnull=True)
     serializer_class = serializers.Node

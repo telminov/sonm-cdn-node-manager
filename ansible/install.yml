@@ -40,7 +40,13 @@
         mode: 0700
       with_items:
         - conf
+        - data
         - sonm/home
+
+    - name: create node-manager config
+      template:
+        src: local_settings.py.jinja2
+        dest: /var/docker/node-manager/conf/local_settings.py
 
 
     - name: copy SONM cli.yml
@@ -62,10 +68,10 @@
         image: telminov/sonm-cdn-node-manager
         pull: yes
         ports:
-          - 127.0.0.1:8080:80
+          - 127.0.0.1:8081:80
         volumes:
-          - /data
           - /var/www/node-manager/static:/static
+          - /var/docker/node-manager/data:/data
           - /var/docker/node-manager/conf:/conf
           - /var/docker/node-manager/sonm/home/:/root/.sonm/
           - /var/docker/node-manager/sonm/sonm-keystore:/etc/sonm/sonm-keystore
@@ -97,13 +103,12 @@
     - name: Wait sonmnode start
       shell: sleep 5
 
-    - name: Check sonmcli - first may be fail
-      shell: docker exec -i node-manager bash -c 'sonmcli token balance'
-      ignore_errors: true
-
     - name: Check sonmcli
       shell: docker exec -i node-manager bash -c 'sonmcli token balance'
 
 
     - name: Restart sonmnode
       shell: docker exec -i node-manager bash -c 'supervisorctl restart sonmnode'
+
+    - name: Restart sonmnode
+      shell: docker exec -i node-manager bash -c 'supervisorctl restart refresh_nodes'

@@ -24,11 +24,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.sleep_time = options.get('time') or self.DEFAULT_SLEEP_TIME
+        verbosity = bool(options.get('verbosity'))
         manager = Manager.get_manager()
 
         if options.get('infinitely'):
             while True:
-                manager.refresh()
+                manager.refresh(verbose=verbosity)
+
+                if verbosity:
+                    print('Sleep %s secs' % self.sleep_time)
+
                 time.sleep(self.sleep_time)
         else:
-            manager.refresh()
+            manager.refresh(verbose=verbosity)

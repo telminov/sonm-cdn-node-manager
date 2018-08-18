@@ -52,13 +52,18 @@ class SonmManager(Manager):
         else:
             self.sonm.order.cancel(order_id=node.external_id)
 
-    def refresh(self):
+    def refresh(self, verbose: bool = True):
         """refresh nodes state info (ip, load)"""
         deals = self.sonm.deal.list()['deals'] or []
+        if verbose:
+            print('Deals count: %s.' % len(deals))
 
         # refresh deals info
         deal_ids = set()
         for deal in deals:
+            if verbose:
+                print('Process deals %s.' % deal)
+
             deal_id = deal['id']
             deal_ids.add(deal_id)
 
@@ -79,6 +84,9 @@ class SonmManager(Manager):
             if tasks:
                 task_id = list(tasks.keys())[0]
             else:
+                if verbose:
+                    print('New deal. Starting task...' % deal)
+
                 task_id = self._start_task(deal_id)
                 node.started = now()
 
@@ -94,17 +102,25 @@ class SonmManager(Manager):
                 node.ip4, node.port = self._get_task_address(deal_id, task_id)
                 node.save()
 
+                if verbose:
+                    print('Got address: %s' % node.get_address())
+
         # node had deal, but now no active deal (case of external deal closing)
         nodes_without_deal = models.Node.objects\
             .exclude(bid__deal_id__in=deal_ids) \
             .filter(stopped__isnull=True) \
             .exclude(bid__deal_id='')
+
+        if verbose and nodes_without_deal.count():
+            print('Nodes without deals: %s' % list(nodes_without_deal))
+
         nodes_without_deal.update(stopped=now())
 
     def _start_task(self, deal_id: str) -> str:
         params = TaskParams(
             image='telminov/sonm-cdn-node',
-            expose=[('80', '80')],
+            expose=[(settings.NODE_EXPOSE_PORT, '80')],
+            evn={'CMS_URL': settings.CMS_URL},
         )
 
         task_id = self.sonm.task.start(deal_id=deal_id, params=params)['id']
