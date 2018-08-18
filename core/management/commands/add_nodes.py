@@ -13,9 +13,6 @@ class Command(BaseCommand):
 
     help = 'Add nodes'
 
-    sleep_time = None
-    verbosity = None
-
     def add_arguments(self, parser):
         parser.add_argument(
             '--infinitely',
