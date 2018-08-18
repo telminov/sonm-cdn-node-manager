@@ -43,12 +43,8 @@ class Node(models.Model):
         self.save()
 
     def get_address(self):
-        address = None
-
         if self.ip4:
             return '%s:%s' % (self.ip4, self.port)
-
-        return address
 
     def get_load(self):
         load = 0
