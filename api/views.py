@@ -43,5 +43,5 @@ class Node(ModelViewSet):
 
     def perform_destroy(self, instance):
         manager = Manager.get_manager()
-        manager.stop(instance)
+        manager.destroy(instance)
 

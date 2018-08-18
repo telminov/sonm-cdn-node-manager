@@ -49,7 +49,7 @@ class DOManager(Manager):
         node.throughput = 100     # let's consider that maximum throughput 100 Mb/sec
         node.save()
 
-    def stop(self, node: Node):
+    def destroy(self, node: Node):
         node.stopped = now()
         node.save()
 

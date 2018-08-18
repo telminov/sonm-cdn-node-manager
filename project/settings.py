@@ -142,7 +142,7 @@ NODE_EXPOSE_PORT = 80
 MAX_LOAD_AVERAGE = 70
 MIN_LOAD_AVERAGE = 30
 NODE_BUNCH_SIZE = 1
-
+DESTROY_NODES_TIME = 10 # minutes
 
 try:
     from project.local_settings import *
