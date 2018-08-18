@@ -32,11 +32,6 @@ try again
 ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.yaml key_store_path=/etc/sonm/sonm-keystore" --start-at-task='Check sonmcli'
 ```
 
-## Init regions
-```
-ansible-playbook -i inventory -u root init_regions.yml
-```
-
 ## Create first user
 ```
 ssh root@INSTANCE_HOST_IP

@@ -1,6 +1,0 @@
-- name: Install CDN regions
-  hosts: all
-
-  tasks:
-    - name: Init regions
-      shell: docker exec -i node-manager bash -c 'python3 ./manage.py init_regions'
