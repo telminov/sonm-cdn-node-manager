@@ -4,5 +4,5 @@ docker==3.3.0
 djangorestframework==3.8.2
 gunicorn==19.8.1
 python-digitalocean==1.13.2
-sonm==0.0.4
+sonm==0.0.5
 ipython

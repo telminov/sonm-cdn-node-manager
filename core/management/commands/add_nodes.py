@@ -75,7 +75,7 @@ class Command(BaseCommand):
     def add_nodes(self, region: str):
         manager = Manager.get_manager()
         for _ in range(settings.NODE_BUNCH_SIZE):
-            last_id = models.Node.objects.aggregate(max_id=Max('id'))['max_id'] or 1
+            last_id = models.Node.objects.aggregate(max_id=Max('id'))['max_id'] or 0
             node  = models.Node(name=f'{region}{last_id + 1}', region=region)
             manager.start(node)
 

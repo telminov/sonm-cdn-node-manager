@@ -120,7 +120,7 @@ class SonmManager(Manager):
         params = TaskParams(
             image='telminov/sonm-cdn-node',
             expose=[(settings.NODE_EXPOSE_PORT, '80')],
-            evn={'CMS_URL': settings.CMS_URL},
+            env={'CMS_URL': settings.CMS_URL},
         )
 
         task_id = self.sonm.task.start(deal_id=deal_id, params=params)['id']
