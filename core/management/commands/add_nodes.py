@@ -54,7 +54,7 @@ class Command(BaseCommand):
             # If there are no nodes in the region, we add
             if not running_nodes.exists():
                 if self.verbosity:
-                    print('Node does not exists')
+                    print(f'Node does in region {region}')
                 self.add_nodes(region)
                 return
 
