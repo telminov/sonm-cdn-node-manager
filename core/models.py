@@ -19,15 +19,15 @@ class Node(models.Model):
     stopped = models.DateTimeField(null=True, blank=True)
 
     throughput = models.BigIntegerField(blank=True, null=True,
-                                        help_text='Максимальная пропускная способность хоста. В байтах.')
+                                        help_text='Maximum bandwidth of the host. Mb/sec')
     prev_sent_bytes = models.BigIntegerField(blank=True, null=True,
-                                             help_text='Предыдущий замер объема отданного трафика с хоста')
+                                             help_text='Previous measurement of the amount of traffic sent from the host')
     prev_sent_bytes_dt = models.DateTimeField(blank=True, null=True,
-                                              help_text='Время вредыдущего замера')
+                                              help_text='Previous measurement time')
     last_sent_bytes = models.BigIntegerField(blank=True, null=True,
-                                             help_text='Последний замер объема отданного трафика с хоста')
+                                             help_text='Last measure of the amount of traffic sent from the host')
     last_sent_bytes_dt = models.DateTimeField(blank=True, null=True,
-                                              help_text='Время последнего')
+                                              help_text='Last measurement time')
 
     def __str__(self):
         return self.name
@@ -52,24 +52,25 @@ class Node(models.Model):
         if self.prev_sent_bytes and self.last_sent_bytes:
             seconds = (self.last_sent_bytes_dt - self.prev_sent_bytes_dt)
             load = (self.last_sent_bytes - self.prev_sent_bytes) / seconds
+            load = load  / (1024 ^ 2)
 
         return load
 
-    def get_load_mb_per_sec(self):
-        load = self.get_load()
-        load = load / (1024 ^ 2)
-        return load
+    @classmethod
+    def get_running_nodes(cls, region=None):
+        nodes = cls.objects.filter(started__isnull=False, stopped__isnull=True)
+        if region:
+            nodes = nodes.filter(region=region)
 
-    def get_throughput_mb_per_sec(self):
-        return (self.throughput or 0) / (1024 ^ 2)
+        return nodes
 
     @classmethod
-    def get_running_nodes(cls):
-        return cls.objects.filter(started__isnull=False, stopped__isnull=True)
+    def get_not_started_nodes(cls, region=None):
+        nodes = cls.objects.filter(started__isnull=True)
+        if region:
+            nodes = nodes.filter(region=region)
 
-    @classmethod
-    def get_not_started_nodes(cls):
-        return cls.objects.filter(started__isnull=True)
+        return nodes
 
 
 class SonmBid(models.Model):

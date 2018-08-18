@@ -139,6 +139,11 @@ NODE_DOWNLOAD = 100     # bid order benchmarks net-download parameter (Mb/sec)
 NODE_UPLOAD = 100       # bid order benchmarks net-upload parameter (Mb/sec)
 NODE_EXPOSE_PORT = 80
 
+MAX_LOAD_AVERAGE = 70
+MIN_LOAD_AVERAGE = 30
+NODE_BUNCH_SIZE = 1
+
+
 try:
     from project.local_settings import *
 except ImportError:
