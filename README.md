@@ -23,7 +23,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 echo "INSTANCE_HOST_IP" > inventory
 
-ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.yaml key_store_path=/etc/sonm/sonm-keystore CMS_URL=http://cms.cdn.sonm.soft-way.biz COUNTERPARTY=0xb4214d064518eed303d966f9ca0fc62ac8df20ee"
+ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.yaml key_store_path=/etc/sonm/sonm-keystore CMS_URL=http://cms.cdn.sonm.soft-way.biz COUNTERPARTY=0xb4214d064518eed303d966f9ca0fc62ac8df20ee NODE_DOWNLOAD=50 NODE_UPLOAD=50 NODE_EXPOSE_PORT=80"
 ```
 
 If got fail "TASK [Check sonmcli]" with "cannot get live token balance: failed to get Ethereum balance: json: cannot unmarshal hex string without 0x prefix into Go value of type *hexutil.Big"
