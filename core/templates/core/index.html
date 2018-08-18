@@ -51,7 +51,7 @@
                     <td title="{{ node.heartbeat|default:'' }}">{{ node.heartbeat|date:'H:i:s'|default:'' }}</td>
                     <td title="{{ node.stopped|default:'' }}">{{ node.stopped|date:'H:i:s'|default:'' }}</td>
                     <td>{{ node.throughput|default:'' }}</td>
-                    <td>{{ node.get_load|floatformat:-2 }} Mb/sec / {{ node.throughput|floatformat:-2 }} Mb/sec</td>
+                    <td>{{ node.get_load|floatformat:-2 }} / {{ node.throughput|floatformat:-2 }} Mb/sec</td>
 
                     {% if node.stopped %}
                         <td>

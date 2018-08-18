@@ -45,7 +45,6 @@ class NodeStop(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         node = self.get_object()
-
         node.stop()
 
         return redirect(self.success_url)
@@ -66,8 +65,6 @@ class NodeDestroy(TemplateView):
 
     def post(self, request, *args, **kwargs):
         node = self.get_object()
-
-        manager = Manager.get_manager()
-        manager.stop(node)
+        node.destroy()
 
         return redirect(self.success_url)
