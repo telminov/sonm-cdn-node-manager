@@ -4,7 +4,8 @@ from django.utils.timezone import now
 
 class Node(models.Model):
     # простое деление по континентам. Можно сделать лучше через координаты.
-    REGIONS = ('AF', 'AN', 'AS', 'EU', 'NA', 'OC', 'SA')
+    # REGIONS = ('AF', 'AN', 'AS', 'EU', 'NA', 'OC', 'SA')
+    REGIONS = ('main', )    # пока SONM не поддерживает регионы
     REGIONS_CHOICES = [(r, r) for r in REGIONS]
 
     external_id = models.CharField(max_length=255, null=True, unique=True, blank=True, editable=False)
@@ -43,23 +44,23 @@ class Node(models.Model):
         self.save()
 
     def get_address(self):
-        address = None
-
         if self.ip4:
-            address = self.ip4
-
-            if self.port:
-                address = f'{address}:{self.port}'
-
-        return address
+            return '%s:%s' % (self.ip4, self.port)
 
     def get_load(self):
         load = 0
         if self.prev_sent_bytes and self.last_sent_bytes:
-            load = self.last_sent_bytes / (1024 ^ 2)
+            seconds = (self.last_sent_bytes_dt - self.prev_sent_bytes_dt)
+            load = (self.last_sent_bytes - self.prev_sent_bytes) / seconds
+
         return load
 
-    def get_throughput(self):
+    def get_load_mb_per_sec(self):
+        load = self.get_load()
+        load = load / (1024 ^ 2)
+        return load
+
+    def get_throughput_mb_per_sec(self):
         return (self.throughput or 0) / (1024 ^ 2)
 
     @classmethod

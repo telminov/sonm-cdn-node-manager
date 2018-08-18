@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'bootstrap4',
     'core',
     'api',
@@ -121,8 +122,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+LOGIN_URL = '/admin/login/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+CMS_URL = 'http://127.0.0.1:8082'
 
 # Digital Ocean
 USE_DO = False
@@ -133,6 +137,7 @@ DO_SSH_KEY_NAMES = []
 COUNTERPARTY = None     # optional restriction for creating cdn-nodes only by specified supplier
 NODE_DOWNLOAD = 100     # bid order benchmarks net-download parameter (Mb/sec)
 NODE_UPLOAD = 100       # bid order benchmarks net-upload parameter (Mb/sec)
+NODE_EXPOSE_PORT = 80
 
 MAX_LOAD_AVERAGE = 70
 MIN_LOAD_AVERAGE = 30
