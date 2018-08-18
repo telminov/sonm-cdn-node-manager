@@ -15,3 +15,8 @@ DATABASES = {
         'NAME': '/data/db.sqlite3',
     }
 }
+
+
+COUNTERPARTY = '0xb4214d064518eed303d966f9ca0fc62ac8df20ee'
+NODE_DOWNLOAD = 1
+NODE_UPLOAD = 1

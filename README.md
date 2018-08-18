@@ -22,5 +22,5 @@ source venv/bin/activate
 pip install -r requirements.txt
 echo "INSTANCE_HOST_IP" > inventory
 
-ansible-playbook -i inventory -u root install.yml
+ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.yaml key_store_path=/etc/sonm/sonm-keystore"
 ```

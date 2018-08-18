@@ -6,7 +6,8 @@ RUN apt-get clean && apt-get update && apt-get install -y \
     supervisor \
     python3-dev \
     python3-pip \
-    npm
+    npm \
+    wget
 
 
 ADD requirements.txt /tmp/requirements.txt
@@ -28,6 +29,9 @@ VOLUME /data/
 VOLUME /conf/
 VOLUME /static/
 VOLUME /media/
+
+RUN wget https://raw.githubusercontent.com/sonm-io/autodeploy/master/sonm-auto-deploy-consumer.sh
+RUN chmod +x sonm-auto-deploy-consumer.sh
 
 CMD test "$(ls /conf/local_settings.py)" || cp project/local_settings.sample.py /conf/local_settings.py; \
     rm project/local_settings.py;  ln -s /conf/local_settings.py project/local_settings.py; \

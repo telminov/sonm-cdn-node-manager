@@ -1,8 +1,8 @@
-docker==3.3.0
 django==2.0.5
+django-bootstrap4==0.0.6
+docker==3.3.0
 djangorestframework==3.8.2
 gunicorn==19.8.1
-ipython
 python-digitalocean==1.13.2
-sonm
-django-bootstrap4==0.0.6
+sonm==0.0.2
+ipython
