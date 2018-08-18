@@ -41,7 +41,7 @@ class SonmManager(Manager):
         bid_id = self.sonm.order.create(bid=bid)['id']
 
         node.external_id = bid_id
-        node.throughput = b.net_upload
+        node.throughput = settings.NODE_UPLOAD
         node.save()
 
         models.SonmBid.objects.create(node=node)

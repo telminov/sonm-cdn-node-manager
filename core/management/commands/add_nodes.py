@@ -3,7 +3,7 @@ import uuid
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.db.models import Sum
+from django.db.models import Sum, Max
 
 from core import models
 from core.manager.base import Manager
@@ -61,24 +61,23 @@ class Command(BaseCommand):
                 self.add_nodes(region)
                 return
 
-            nodes_info = running_nodes.aggregate(
-                throughput_sum=Sum('throughput'),
-                last_sent_bytes_sum = Sum('last_sent_bytes')
-            )
+            load_sum = 0
+            for node in running_nodes:
+                load_sum += node.get_load()
 
-            throughput_sum = nodes_info['throughput_sum'] or 0
-            last_sent_bytes_sum = nodes_info['last_sent_bytes_sum'] or 0
-            load_average = (last_sent_bytes_sum / throughput_sum) * 100
+            throughput_sum = running_nodes.aggregate(throughput_sum=Sum('throughput'))['throughput_sum'] or 0
+            load_average = (load_sum / throughput_sum) * 100
 
             if load_average >= settings.MAX_LOAD_AVERAGE:
                 if self.verbosity:
-                    print(f'Load increased ({load_average}%), add node ...')
+                    print(f'Load increased ({load_average}%), add nodes ...')
                 self.add_nodes(region)
 
     def add_nodes(self, region: str):
         manager = Manager.get_manager()
-        for _ in range(settings.NODE_BUNCH_SIZE or 1):
-            node  = models.Node(name=f'{region} - {uuid.uuid4()}', region=region)
+        for _ in range(settings.NODE_BUNCH_SIZE):
+            last_id = models.Node.objects.aggregate(max_id=Max('id'))['max_id'] or 1
+            node  = models.Node(name=f'{region}{last_id + 1}', region=region)
             manager.start(node)
 
             if self.verbosity:
