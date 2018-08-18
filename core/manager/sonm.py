@@ -112,9 +112,9 @@ class SonmManager(Manager):
             .exclude(bid__deal_id='')
 
         if verbose and nodes_without_deal.count():
-            print('Nodes without deals: %s' % list(nodes_without_deal))
+            print('Destroy nodes without deals: %s' % list(nodes_without_deal))
 
-        nodes_without_deal.update(stopped=now())
+        nodes_without_deal.delete()
 
     def _start_task(self, deal_id: str) -> str:
         params = TaskParams(

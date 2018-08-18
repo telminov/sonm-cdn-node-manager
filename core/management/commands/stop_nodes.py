@@ -17,13 +17,13 @@ class Command(BaseCommand):
             '--infinitely',
             dest='infinitely',
             action='store_true',
-            help='Бесконечный цикл, смотрим на загрузку нод',
+            help='Infinite loop, look at the changes in the node',
         )
         parser.add_argument(
             '--time',
             dest='time',
             type=int,
-            help='С какой периодичностью запускать проверку (в секундах)',
+            help='How often to run the check (in seconds)',
         )
 
     def handle(self, *args, **options):
