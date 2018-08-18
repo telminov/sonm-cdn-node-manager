@@ -134,6 +134,12 @@ COUNTERPARTY = None     # optional restriction for creating cdn-nodes only by sp
 NODE_DOWNLOAD = 100     # bid order benchmarks net-download parameter (Mb/sec)
 NODE_UPLOAD = 100       # bid order benchmarks net-upload parameter (Mb/sec)
 
+MAX_LOAD_AVERAGE = 70
+MIN_LOAD_AVERAGE = 30
+NODE_BUNCH_SIZE = 1
+MIN_NODES_BUNCH_COUNT = 1
+
+
 try:
     from project.local_settings import *
 except ImportError:

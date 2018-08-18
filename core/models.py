@@ -63,12 +63,20 @@ class Node(models.Model):
         return (self.throughput or 0) / (1024 ^ 2)
 
     @classmethod
-    def get_running_nodes(cls):
-        return cls.objects.filter(started__isnull=False, stopped__isnull=True)
+    def get_running_nodes(cls, region=None):
+        nodes = cls.objects.filter(started__isnull=False, stopped__isnull=True)
+        if region:
+            nodes = nodes.filter(region=region)
+
+        return nodes
 
     @classmethod
-    def get_not_started_nodes(cls):
-        return cls.objects.filter(started__isnull=True)
+    def get_not_started_nodes(cls, region=None):
+        nodes = cls.objects.filter(started__isnull=True)
+        if region:
+            nodes = nodes.filter(region=region)
+
+        return nodes
 
 
 class SonmBid(models.Model):
