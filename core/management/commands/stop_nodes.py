@@ -61,7 +61,7 @@ class Command(BaseCommand):
                     self.stop_nodes(region)
 
                 elif self.verbosity:
-                    print('Minimum number of nodes')
+                    print(f'Minimum number of nodes in region {region}')
 
 
     def stop_nodes(self, region: str):
