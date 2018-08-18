@@ -17,7 +17,8 @@ apt install -y python
 
 start install ansible-playbook
 ```
-cd ansible
+cd <project_path>/ansible
+virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 echo "INSTANCE_HOST_IP" > inventory

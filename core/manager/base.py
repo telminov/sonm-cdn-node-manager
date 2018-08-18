@@ -21,7 +21,7 @@ class Manager:
     def stop(self, node: Node):
         raise NotImplementedError()
 
-    def refresh(self):
+    def refresh(self, verbose: bool = False):
         """refresh nodes state info (ip, load)"""
         raise NotImplementedError()
 
