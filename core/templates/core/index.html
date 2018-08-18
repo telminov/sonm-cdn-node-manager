@@ -35,6 +35,7 @@
                 <th>Throughput</th>
                 <th>Load</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
 
@@ -55,14 +56,13 @@
 
                     {% if node.stopped %}
                         <td>
-                            <a href="{% url 'node_destroy' node.pk %}" class="btn btn-sm btn-danger">Destroy</a>
-                        </td>
-                    {% else %}
-                        <td>
                             <a href="{% url 'node_stop' node.pk %}" class="btn btn-sm btn-danger">Stop</a>
                         </td>
                     {% endif %}
 
+                    <td>
+                        <a href="{% url 'node_destroy' node.pk %}" class="btn btn-sm btn-danger">Destroy</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
