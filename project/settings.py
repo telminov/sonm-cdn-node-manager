@@ -138,7 +138,7 @@ MAX_LOAD_AVERAGE = 70
 MIN_LOAD_AVERAGE = 30
 NODE_BUNCH_SIZE = 1
 MIN_NODES_BUNCH_COUNT = 1
-
+DESTROY_NODES_TIME = 10
 
 try:
     from project.local_settings import *

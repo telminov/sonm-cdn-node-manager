@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block container %}
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="alert alert-danger">
+            Are you sure want to destroy node "{{ object }}"?
+        </div>
+
+        <a href="/" class="btn btn-default">No</a>
+        <button type="submit" class="btn btn-danger">Yes</button>
+    </form>
+
+{% endblock %}

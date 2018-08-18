@@ -7,7 +7,7 @@ from core.manager.base import Manager
 
 class Index(ListView):
     template_name = 'core/index.html'
-    queryset = models.Node.objects.filter(stopped__isnull=True)
+    queryset = models.Node.objects.all()
 
 
 class NodeCreate(CreateView):
@@ -45,8 +45,28 @@ class NodeStop(TemplateView):
     def post(self, request, *args, **kwargs):
         node = self.get_object()
 
-        if not node.stopped:
-            manager = Manager.get_manager()
-            manager.stop(node)
+        node.stop()
+
+        return redirect(self.success_url)
+
+
+class NodeDestroy(TemplateView):
+    success_url = '/'
+    template_name = 'core/node_destroy.html'
+
+    def get_object(self):
+        return models.Node.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c['title'] = 'Destroy node'
+        c['object'] = self.get_object()
+        return c
+
+    def post(self, request, *args, **kwargs):
+        node = self.get_object()
+
+        manager = Manager.get_manager()
+        manager.stop(node)
 
         return redirect(self.success_url)

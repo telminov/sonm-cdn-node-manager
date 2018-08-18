@@ -35,12 +35,15 @@ class Node(models.Model):
         if self.stopped:
             return
 
-        from core.manager.base import Manager
-        manager = Manager.get_manager()
-        manager.stop(self)
-
         self.stopped = now()
         self.save()
+
+    def destroy(self):
+        from core.manager.base import Manager
+        manager = Manager.get_manager()
+
+        manager.stop(self)
+        self.delete()
 
     def get_address(self):
         address = None

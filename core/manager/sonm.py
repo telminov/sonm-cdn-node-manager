@@ -47,9 +47,6 @@ class SonmManager(Manager):
         models.SonmBid.objects.create(node=node)
 
     def stop(self, node: models.Node):
-        node.stopped = now()
-        node.save()
-
         if node.bid.deal_id:
             self.sonm.deal.close(deal_id=node.bid.deal_id)
         else:
