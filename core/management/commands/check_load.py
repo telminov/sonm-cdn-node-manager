@@ -18,13 +18,13 @@ class Command(BaseCommand):
             '--infinitely',
             dest='infinitely',
             action='store_true',
-            help=u'Бесконечный цикл, смотрим на загрузку нод',
+            help='Бесконечный цикл, смотрим на загрузку нод',
         )
         parser.add_argument(
             '--time',
             dest='time',
             type=int,
-            help=u'С какой периодичностью запускать проверку (в секундах)',
+            help='С какой периодичностью запускать проверку (в секундах)',
         )
 
     def handle(self, *args, **options):
