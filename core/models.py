@@ -47,6 +47,30 @@ class Node(models.Model):
         if self.ip4:
             return '%s:%s' % (self.ip4, self.port)
 
+    def get_load(self):
+        load = 0
+        if self.prev_sent_bytes and self.last_sent_bytes:
+            seconds = (self.last_sent_bytes_dt - self.prev_sent_bytes_dt)
+            load = (self.last_sent_bytes - self.prev_sent_bytes) / seconds
+
+        return load
+
+    def get_load_mb_per_sec(self):
+        load = self.get_load()
+        load = load / (1024 ^ 2)
+        return load
+
+    def get_throughput_mb_per_sec(self):
+        return (self.throughput or 0) / (1024 ^ 2)
+
+    @classmethod
+    def get_running_nodes(cls):
+        return cls.objects.filter(started__isnull=False, stopped__isnull=True)
+
+    @classmethod
+    def get_not_started_nodes(cls):
+        return cls.objects.filter(started__isnull=True)
+
 
 class SonmBid(models.Model):
     node = models.OneToOneField(Node, on_delete=models.CASCADE, related_name='bid')
