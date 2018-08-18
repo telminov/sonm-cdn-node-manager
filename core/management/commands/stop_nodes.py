@@ -48,8 +48,10 @@ class Command(BaseCommand):
             for node in running_nodes:
                 load_sum += node.get_load()
 
-            throughput_sum = running_nodes.aggregate(throughput_sum=Sum('throughput'))['throughput_sum'] or 1
-            load_average = (load_sum / throughput_sum) * 100
+            throughput_sum = running_nodes.aggregate(throughput_sum=Sum('throughput'))['throughput_sum']
+            load_average = 0
+            if throughput_sum:
+                load_average = (load_sum / throughput_sum) * 100
 
             if load_average < settings.MIN_LOAD_AVERAGE:
 
