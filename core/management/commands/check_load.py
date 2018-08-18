@@ -29,17 +29,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.sleep_time = options.get('time') or self.DEFAULT_SLEEP_TIME
+        self.verbosity = bool(options.get('verbosity'))
 
         if options.get('infinitely'):
             while True:
                 self.monitor()
+                if self.verbosity:
+                    print(f'Sleep {self.sleep_time} sec')
                 time.sleep(self.sleep_time)
         else:
             self.monitor()
 
     def monitor(self):
         nodes = models.Node.get_running_nodes()
-        for node in nodes.iterator(100):
+        for node in nodes.iterator():
             self.check_node(node)
 
     @staticmethod
@@ -54,10 +57,14 @@ class Command(BaseCommand):
                 node.last_sent_bytes_dt = now()
                 node.save()
             else:
-                print(f'Ошибка проверки загруженности ноды {node.id} с адрессом {node_address}.')
-                print(f'КОД: {response.status_code}')
-                print(f'ОТВЕТ: {response.content}')
+                print(f'Node check load error! '
+                      f'NAME: {node.id} '
+                      f'ADDRESS: {node_address}.'
+                      f'CODE: {response.status_code}'
+                      f'RESPONSE: {response.content}\n')
 
         except Exception as e:
-            print(f'Ошибка проверки загруженности ноды {node.id} с адрессом {node_address}')
-            print(e)
+            print(f'Node check load error! '
+                  f'NAME: {node.id} '
+                  f'ADDRESS: {node_address}.'
+                  f'EXCEPTION: \n{e}.\n')

@@ -46,20 +46,24 @@ class Node(models.Model):
         address = None
 
         if self.ip4:
-            address = self.ip4
-
-            if self.port:
-                address = f'{address}:{self.port}'
+            return '%s:%s' % (self.ip4, self.port)
 
         return address
 
     def get_load(self):
         load = 0
         if self.prev_sent_bytes and self.last_sent_bytes:
-            load = self.last_sent_bytes / (1024 ^ 2)
+            seconds = (self.last_sent_bytes_dt - self.prev_sent_bytes_dt)
+            load = (self.last_sent_bytes - self.prev_sent_bytes) / seconds
+
         return load
 
-    def get_throughput(self):
+    def get_load_mb_per_sec(self):
+        load = self.get_load()
+        load = load / (1024 ^ 2)
+        return load
+
+    def get_throughput_mb_per_sec(self):
         return (self.throughput or 0) / (1024 ^ 2)
 
     @classmethod
