@@ -4,8 +4,8 @@ from core.manager.do import DOManager, REGIONS_MAP
 
 
 class Command(BaseCommand):
-    help = 'Распространяет образ CDN-ноды между регионами Digital Ocean. ' \
-           'Достаточно иметь его изначально только в одном регионе.'
+    help = 'Distributes a CDN node image between Digital Ocean regions. ' \
+           'It is enough to have it initially only in one region.'
 
     def handle(self, *args, **options):
         manager = DOManager()

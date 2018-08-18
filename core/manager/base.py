@@ -26,7 +26,7 @@ class Manager:
         raise NotImplementedError()
 
     def init_regions(self) -> List[Node]:
-        """Инициализация сети с нодами"""
+        """Network initialization"""
         nodes = []
 
         for region in Node.REGIONS:

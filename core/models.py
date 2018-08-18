@@ -3,9 +3,9 @@ from django.utils.timezone import now
 
 
 class Node(models.Model):
-    # простое деление по континентам. Можно сделать лучше через координаты.
+    # simple division by continent. You can do better through the coordinates.
     # REGIONS = ('AF', 'AN', 'AS', 'EU', 'NA', 'OC', 'SA')
-    REGIONS = ('main', )    # пока SONM не поддерживает регионы
+    REGIONS = ('main', )    # now SONM does not support regions
     REGIONS_CHOICES = [(r, r) for r in REGIONS]
 
     external_id = models.CharField(max_length=255, null=True, unique=True, blank=True, editable=False)
