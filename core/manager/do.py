@@ -49,7 +49,7 @@ class DOManager(Manager):
         node.throughput = 100     # считаем максимольной пропускную способность 100 Мб/сек
         node.save()
 
-    def stop(self, node: Node):
+    def destroy(self, node: Node):
         node.stopped = now()
         node.save()
 

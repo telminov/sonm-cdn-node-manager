@@ -43,7 +43,7 @@ class Node(models.Model):
         from core.manager.base import Manager
         manager = Manager.get_manager()
 
-        manager.stop(self)
+        manager.destroy(self)
         self.delete()
 
     def get_address(self):

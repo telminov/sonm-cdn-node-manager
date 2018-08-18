@@ -18,7 +18,7 @@ class Manager:
     def start(self, node: Node):
         raise NotImplementedError()
 
-    def stop(self, node: Node):
+    def destroy(self, node: Node):
         raise NotImplementedError()
 
     def refresh(self, verbose: bool = False):
