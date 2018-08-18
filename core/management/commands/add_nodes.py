@@ -21,13 +21,13 @@ class Command(BaseCommand):
             '--infinitely',
             dest='infinitely',
             action='store_true',
-            help=u'Бесконечный цикл, смотрим на загрузку нод',
+            help='Бесконечный цикл, смотрим на загрузку нод',
         )
         parser.add_argument(
             '--time',
             dest='time',
             type=int,
-            help=u'С какой периодичностью запускать проверку (в секундах)',
+            help='С какой периодичностью запускать проверку (в секундах)',
         )
 
     def handle(self, *args, **options):
@@ -42,23 +42,21 @@ class Command(BaseCommand):
             self.check_load_average()
 
     def check_load_average(self):
-         # Собираем метрики и принимаем решение о добавлении или удалении нод
-
         nodes = models.Node.objects.filter(stopped__isnull=True).exclude(ip4='')
         for region in set(nodes.values_list('region', flat=True)):
             running_nodes = models.Node.get_running_nodes(region)
             not_started_nodes = models.Node.get_not_started_nodes(region)
 
-            # есть нод, которые не стартанули - ждем
+            # If there are nodes that are not running - wait
             if not_started_nodes.exists():
                 if self.verbosity:
-                    print(f'Есть не запустившиеся ноды ({not_started_nodes.count()} шт), ждем')
+                    print(f'There are no running nodes ({not_started_nodes.count()}), wait ...')
                 return
 
-            # Если нет нод в регионе - добавим
+            # If there are no nodes in the region, we add
             if not running_nodes.exists():
                 if self.verbosity:
-                    print('Нет нод вообще, добавляем')
+                    print('Node does not exists')
                 self.add_nodes(region)
                 return
 
@@ -73,7 +71,7 @@ class Command(BaseCommand):
 
             if load_average >= settings.MAX_LOAD_AVERAGE:
                 if self.verbosity:
-                    print(f'Нагрузка выросла ({load_average}%), добавляем')
+                    print(f'Load increased ({load_average}%), add node ...')
                 self.add_nodes(region)
 
     def add_nodes(self, region: str):
@@ -83,4 +81,4 @@ class Command(BaseCommand):
             manager.start(node)
 
             if self.verbosity:
-                print(f'Добавлена нода с именем {node.name} в регионе {region}')
+                print(f'Add node {node.name} in region {region}')
