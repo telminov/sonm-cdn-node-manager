@@ -37,6 +37,8 @@ class Command(BaseCommand):
         if options.get('infinitely'):
             while True:
                 self.check_load_average()
+                if self.verbosity:
+                    print(f'Sleep {self.sleep_time} sec')
                 time.sleep(self.sleep_time)
         else:
             self.check_load_average()
