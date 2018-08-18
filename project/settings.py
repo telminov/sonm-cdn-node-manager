@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'bootstrap4',
     'core',
     'api',
@@ -124,6 +125,8 @@ USE_TZ = True
 LOGIN_URL = '/admin/login/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+CMS_URL = 'http://127.0.0.1:8082'
 
 # Digital Ocean
 USE_DO = False
