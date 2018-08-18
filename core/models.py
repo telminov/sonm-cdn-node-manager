@@ -43,8 +43,32 @@ class Node(models.Model):
         self.save()
 
     def get_address(self):
+        address = None
+
         if self.ip4:
-            return '%s:%s' % (self.ip4, self.port)
+            address = self.ip4
+
+            if self.port:
+                address = f'{address}:{self.port}'
+
+        return address
+
+    def get_load(self):
+        load = 0
+        if self.prev_sent_bytes and self.last_sent_bytes:
+            load = self.last_sent_bytes / (1024 ^ 2)
+        return load
+
+    def get_throughput(self):
+        return (self.throughput or 0) / (1024 ^ 2)
+
+    @classmethod
+    def get_running_nodes(cls):
+        return cls.objects.filter(started__isnull=False, stopped__isnull=True)
+
+    @classmethod
+    def get_not_started_nodes(cls):
+        return cls.objects.filter(started__isnull=True)
 
 
 class SonmBid(models.Model):
