@@ -55,4 +55,5 @@ class Command(BaseCommand):
 
     @staticmethod
     def get_need_destroy_nodes():
-        return models.Node.objects.filter(stopped__lte=now() - timedelta(minutes=settings.DESTROY_NODES_TIME))
+        deadline = now() - timedelta(minutes=settings.DESTROY_NODES_TIME)
+        return models.Node.objects.filter(stopped__lte=deadline)
