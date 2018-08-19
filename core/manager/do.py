@@ -59,7 +59,7 @@ class DOManager(Manager):
 
         raise Exception('Not found node with external ID "%s"' % node.external_id)
 
-    def refresh(self):
+    def refresh(self, verbose: bool = False):
         current_nodes = {n.external_id: n for n in Node.objects.filter(stopped__isnull=True)}
 
         droplets = self.get_droplets()

@@ -54,7 +54,7 @@
                     <td>{{ node.throughput|default:'' }}</td>
                     <td>{{ node.get_load|floatformat:-2 }} / {{ node.throughput|floatformat:-2 }} Mb/sec</td>
 
-                    {% if node.stopped %}
+                    {% if not node.stopped %}
                         <td>
                             <a href="{% url 'node_stop' node.pk %}" class="btn btn-sm btn-danger">Stop</a>
                         </td>

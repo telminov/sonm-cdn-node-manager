@@ -23,7 +23,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        self.sleep_time = options.get('time') or self.DEFAULT_SLEEP_TIME
+        sleep_time = options.get('time') or self.DEFAULT_SLEEP_TIME
         verbosity = bool(options.get('verbosity'))
         manager = Manager.get_manager()
 
@@ -32,8 +32,8 @@ class Command(BaseCommand):
                 manager.refresh(verbose=verbosity)
 
                 if verbosity:
-                    print('Sleep %s secs' % self.sleep_time)
+                    print('Sleep %s secs' % sleep_time)
 
-                time.sleep(self.sleep_time)
+                time.sleep(sleep_time)
         else:
             manager.refresh(verbose=verbosity)

@@ -55,7 +55,7 @@ class Node(models.Model):
         if self.prev_sent_bytes and self.last_sent_bytes:
             seconds = (self.last_sent_bytes_dt - self.prev_sent_bytes_dt).seconds
             load = (self.last_sent_bytes - self.prev_sent_bytes) / seconds
-            load = load  / (1024 ^ 2)
+            load = load / (1024 ^ 2)
 
         return load
 
