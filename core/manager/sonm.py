@@ -22,8 +22,8 @@ class SonmManager(Manager):
             ram_size=1024 * 1024 * 100,             # 100MB
             storage_size=1024 * 1024 * 1024 * 10,   # 10GB
             cpu_cores=1,
-            cpu_sysbench_multi=1000,
-            cpu_sysbench_single=800,
+            cpu_sysbench_multi=500,
+            cpu_sysbench_single=500,
             net_download=1024 * 1024 * settings.NODE_DOWNLOAD,
             net_upload=1024 * 1024 * settings.NODE_UPLOAD,
         )
