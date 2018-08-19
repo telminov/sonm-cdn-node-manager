@@ -19,7 +19,6 @@ REGIONS_MAP = {
     'SA': ['sfo2'],                                     # Южная Америка
 }
 TAG_NAME = 'sonm-cdn'
-CND_NODE_IMAGE_NAME = 'sonm-cdn-node'
 
 
 class DOManager(Manager):
@@ -103,9 +102,9 @@ class DOManager(Manager):
     def get_image(self) -> digitalocean.Image:
         if not self._image:
             for image in self.get_manager().get_all_images():
-                if image.name == CND_NODE_IMAGE_NAME:
+                if image.name == settings.CND_NODE_IMAGE_NAME:
                     self._image = image
                     break
             if not self._image:
-                raise Exception('Digital Ocean image "%s" not found' % CND_NODE_IMAGE_NAME)
+                raise Exception('Digital Ocean image "%s" not found' % settings.CND_NODE_IMAGE_NAME)
         return self._image

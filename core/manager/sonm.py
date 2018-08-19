@@ -118,7 +118,7 @@ class SonmManager(Manager):
 
     def _start_task(self, deal_id: str) -> str:
         params = TaskParams(
-            image='telminov/sonm-cdn-node',
+            image=settings.CND_NODE_IMAGE_NAME,
             expose=[(settings.NODE_EXPOSE_PORT, '80')],
             env={'CMS_URL': settings.CMS_URL},
         )

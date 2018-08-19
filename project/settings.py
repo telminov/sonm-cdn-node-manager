@@ -144,6 +144,8 @@ MIN_LOAD_AVERAGE = 30
 NODE_BUNCH_SIZE = 1
 DESTROY_NODES_TIME = 10 # minutes
 
+CND_NODE_IMAGE_NAME = 'telminov/sonm-cdn-node'
+
 try:
     from project.local_settings import *
 except ImportError:
