@@ -37,3 +37,18 @@ ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.y
 ssh root@INSTANCE_HOST_IP
 docker exec -ti node-manager bash -c 'python3 ./manage.py createsuperuser'
 ```
+
+
+## Testing
+install LocustIO
+```
+pip install locusio
+```
+
+Create locustfile.py (example https://github.com/NickSablukov/sonm-load-testing/blob/master/locustfile.py)
+
+Run locust with testing url
+
+```
+export URL="http://cdn-sonm.soft-way.biz/asset/0c75f5b6-de9d-4bc9-8f08-5447f7059898"; locust -f locustfile.py
+```
