@@ -2,7 +2,7 @@
 Manage the network of hosts to which CDN nodes will be deployed.
 
 This element should:
- - deploy the initial network in all regions through SONY
+ - deploy the initial network in all regions through SONM
  - monitor the load and, if necessary, create / delete new hosts
 
 
@@ -29,7 +29,7 @@ ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.y
 If got fail "TASK [Check sonmcli]" with "cannot get live token balance: failed to get Ethereum balance: json: cannot unmarshal hex string without 0x prefix into Go value of type *hexutil.Big"
 try again
 ```
-ansible-playbook -i inventory -u root install.yml -e "cli_yml_path=~/.sonm/cli.yaml key_store_path=/etc/sonm/sonm-keystore" --start-at-task='Check sonmcli'
+ansible-playbook -i inventory -u root install.yml --start-at-task='Check sonmcli'
 ```
 
 ## Create first user
