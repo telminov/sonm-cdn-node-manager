@@ -1,9 +1,9 @@
 # node-manger
-Управление сетью хостов, на которые будет разворачиваться узлы CDN. 
+Manage the network of hosts to which CDN nodes will be deployed.
 
-Этот элемент должнен:
- - развернуть начальную сеть во всех регионах через SONM
- - следить за нагрузкой (например через prometeus) и по необходимости опускать/поднимать новые хосты
+This element should:
+ - deploy the initial network in all regions through SONY
+ - monitor the load and, if necessary, create / delete new hosts
 
 
 ## Installation
