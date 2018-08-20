@@ -13,5 +13,5 @@ Project consist of few elements:
  - DNS - https://github.com/telminov/sonm-cdn-dns/blob/master/README.md#installation
  - node-manager - https://github.com/telminov/sonm-cdn-node-manager/blob/master/README.md#installation
 3. Setup DNS (say, cdn.example.com) delegaring for cdn-domain to CDN DNS instance
-4. Add content to CMS via https://github.com/telminov/sonm-cdn-cms, say, file.jpg
-5. Check content is available via CDN using http://cdn.example.com/file.jpg
+4. Add content to CMS via https://github.com/telminov/sonm-cdn-cms, say, file.jpg. UUID will be assigned to file.
+5. Check content is available via CDN using http://cdn.example.com/<file_uuid>
