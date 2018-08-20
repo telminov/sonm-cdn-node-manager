@@ -1,9 +1,9 @@
 # node-manger
-Manage the network of hosts to which CDN nodes will be deployed.
+Node-manager is the element of SONM CDN - https://github.com/telminov/sonm-cdn-node-manager/blob/master/SONM%20CDN.md
 
-This element should:
+It manage the network of CDN nodes:
  - deploy the initial network in all regions through SONM
- - monitor the load and, if necessary, create / delete new hosts
+ - monitor the load and, if necessary, create / delete new nodes (https://github.com/telminov/sonm-cdn-node)
 
 
 ## Installation
@@ -38,8 +38,13 @@ ssh root@INSTANCE_HOST_IP
 docker exec -ti node-manager bash -c 'python3 ./manage.py createsuperuser'
 ```
 
+## Starting
+After start manager automatically will create nodes for each region via SONM:
+ 1. Create BID order - https://docs.sonm.com/concepts/main-entities/order
+ 1. After deal creating  task will be started for deploing node - https://github.com/telminov/sonm-cdn-node
 
-## Testing
+
+## Load testing
 install LocustIO
 ```
 pip install locusio
