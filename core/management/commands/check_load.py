@@ -45,8 +45,7 @@ class Command(BaseCommand):
         for node in nodes.iterator():
             self.check_node(node)
 
-    @staticmethod
-    def check_node(node: models.Node):
+    def check_node(self, node: models.Node):
         node_address = node.get_address()
         try:
             response = requests.get(f'http://{node_address}/bytes_sent')
@@ -56,6 +55,10 @@ class Command(BaseCommand):
                 node.last_sent_bytes = int(response.content)
                 node.last_sent_bytes_dt = now()
                 node.save()
+
+                if self.verbosity:
+                    print(f'Node {node.name}: {node.get_load()} Mb/sec')
+
             else:
                 print(f'Node check load error! '
                       f'NAME: {node.id} '
