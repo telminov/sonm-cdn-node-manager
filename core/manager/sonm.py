@@ -19,7 +19,7 @@ class SonmManager(Manager):
 
     def start(self, node: models.Node):
         b = Benchmarks(
-            ram_size=1024 * 1024 * 100,             # 100MB
+            ram_size=1024 * 1024 * 500,             # 500MB
             storage_size=1024 * 1024 * 1024 * 10,   # 10GB
             cpu_cores=1,
             cpu_sysbench_multi=500,
