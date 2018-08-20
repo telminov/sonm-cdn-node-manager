@@ -7,6 +7,10 @@ It manage the network of CDN nodes:
 
 
 ## Installation
+Referens installation descripted in ansible-playbook - https://github.com/telminov/sonm-cdn-node-manager/blob/master/ansible/install.yml
+
+Assumes than installation perform from host with installed sonm cli: ansible-playbook will copy cli.yaml and sonm-keystore from host to container with node-manager.
+
 Install example on Digital Ocean instance with Ubuntu Server 18.04
 
 install python on host
